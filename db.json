@@ -1,0 +1,23 @@
+{
+    "students": [
+      { "regNo": "2024001", "name": "John Doe" },
+      { "regNo": "2024002", "name": "Jane Smith" },
+      { "regNo": "2024003", "name": "John Doe" },
+      { "regNo": "2024004", "name": "Jane Smith" },
+      { "regNo": "20240015", "name": "John Doe" },
+      { "regNo": "20240026", "name": "Jane Smith" },
+      { "regNo": "20240014", "name": "John Doe" },
+      { "regNo": "20240022", "name": "Jane Smith" }
+    ],
+    "marks": {
+      "12345": {
+        "Telugu": { "FA1": 85, "FA2": 78, "SA1": 90, "FA3": 88, "FA4": 92, "SA2": 95 },
+        "Hindi": { "FA1": 80, "FA2": 75, "SA1": 88, "FA3": 85, "FA4": 90, "SA2": 89 },
+        "English": { "FA1": 78, "FA2": 82, "SA1": 85, "FA3": 80, "FA4": 86, "SA2": 90 },
+        "Maths": { "FA1": 90, "FA2": 88, "SA1": 92, "FA3": 89, "FA4": 93, "SA2": 97 },
+        "Science": { "FA1": 88, "FA2": 84, "SA1": 91, "FA3": 87, "FA4": 90, "SA2": 94 },
+        "Social": { "FA1": 82, "FA2": 79, "SA1": 85, "FA3": 83, "FA4": 87, "SA2": 90 }
+      }
+    }
+  }
+  
