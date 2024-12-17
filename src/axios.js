@@ -31,6 +31,8 @@ export const setAuthToken = (token) => {
 
 // Request Interceptor to add Authorization header
 axiosInstance.interceptors.request.use((config) => {
+  console.log('Request Config:', config);
+  console.log('Cookies:', document.cookie);
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -59,7 +61,7 @@ axiosInstance.interceptors.response.use(
           setAuthToken(newAccessToken);
           onRefreshed(newAccessToken);
           isRefreshing = false;
-
+        console.log("newAccessToken =  " + newAccessToken);
           // Retry the original request with the new token
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
           return axiosInstance(originalRequest);
