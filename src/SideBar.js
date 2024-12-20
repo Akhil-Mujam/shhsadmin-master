@@ -14,7 +14,7 @@ import Folder from './assets/Folder.png';
 import Setting from './assets/Setting.png';
 
 const SideBar = () => {
-  const { role, loading } = useContext(UserContext);
+  const { role} = useContext(UserContext);
 
   //const displayRole = loading ? 'Loading...' : role ? role.toUpperCase() : 'GUEST';
 

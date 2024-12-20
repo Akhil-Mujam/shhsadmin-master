@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import axiosInstance from "../axios";
 
 const ViewStudentAttendance = () => {
@@ -20,7 +19,7 @@ const ViewStudentAttendance = () => {
       
       fetchAttendance();
     }
-  }, [regNo, month]);
+  }, [regNo, month,fetchAttendance]);
 
   const fetchRegNo = async () => {
     try {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../axios'; // Assuming axiosInstance is configured
-import DataTable from './DataTable';
 import TeacherTable from './TeacherTable';
 
 const sampleTeachers = [

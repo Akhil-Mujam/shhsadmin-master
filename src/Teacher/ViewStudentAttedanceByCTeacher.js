@@ -46,7 +46,7 @@ const ViewStudentAttendanceByTeacher = () => {
     if (classDetails.classId && classDetails.classSection) {
       fetchAttendance(date);
     }
-  }, [classDetails, date]);
+  }, [classDetails, date,fetchAttendance]);
 
   // Fetch attendance records (memoized for better performance)
   const fetchAttendance = useCallback(

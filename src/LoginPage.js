@@ -11,7 +11,7 @@ const LoginPage = () => {
   const location = useLocation();
 
   // Redirect to saved route or default route after login
-  const from = location.state?.from?.pathname || "/";
+  // const from = location.state?.from?.pathname || "/";
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
