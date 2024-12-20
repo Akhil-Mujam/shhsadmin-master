@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState ,useCallback } from 'react';
+
+
 import {
   useReactTable,
   createColumnHelper,
@@ -23,7 +25,7 @@ const TeacherTable = ({ data, fields, onMakeClassTeacher, onRemoveClassTeacher }
   const [modalData, setModalData] = useState(null);
   const [classTeacherDetails, setClassTeacherDetails] = useState({ className: '', classSection: '' });
 
-  const columnHelper = createColumnHelper();
+ 
 
   const getClassSections = (className) => {
     if (className === 'Nursery' || className === 'LKG' || className === 'UKG') {
@@ -36,7 +38,20 @@ const TeacherTable = ({ data, fields, onMakeClassTeacher, onRemoveClassTeacher }
     return [];
   };
 
+  const handleClassTeacher = useCallback((teacher) => {
+    if (teacher.role === 'Class Teacher') {
+      // Remove class teacher role
+      onRemoveClassTeacher(teacher.id); // API call to remove
+      toast.success('Removed as Class Teacher!');
+    } else {
+      setModalData(teacher); // Set data for modal
+      setClassTeacherDetails({ className: '', classSection: '' });
+      setIsClassTeacherModalVisible(true);
+    }
+  }, [onRemoveClassTeacher]);
+
   const columns = useMemo(() => {
+    const columnHelper = createColumnHelper();
     const baseColumns = fields.map((field) =>
       columnHelper.accessor(field.key, { header: field.label })
     );
@@ -81,7 +96,7 @@ const TeacherTable = ({ data, fields, onMakeClassTeacher, onRemoveClassTeacher }
     );
 
     return baseColumns;
-  }, [fields]);
+  }, [fields,handleClassTeacher]);
 
   const table = useReactTable({
     data,
@@ -112,17 +127,7 @@ const TeacherTable = ({ data, fields, onMakeClassTeacher, onRemoveClassTeacher }
     setIsModalVisible(true);
   };
 
-  const handleClassTeacher = (teacher) => {
-    if (teacher.role === 'Class Teacher') {
-      // Remove class teacher role
-      onRemoveClassTeacher(teacher.id); // API call to remove
-      toast.success('Removed as Class Teacher!');
-    } else {
-      setModalData(teacher); // Set data for modal
-      setClassTeacherDetails({ className: '', classSection: '' });
-      setIsClassTeacherModalVisible(true);
-    }
-  };
+  
 
   const handleClassTeacherSubmit = async () => {
     if (!classTeacherDetails.className || !classTeacherDetails.classSection) {

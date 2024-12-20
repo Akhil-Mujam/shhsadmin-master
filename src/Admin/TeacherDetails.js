@@ -46,29 +46,28 @@ const TeacherDetails = () => {
   const [error, setError] = useState(null);
   const [pageSize] = useState(10); // Number of teachers per page
 
-  const fetchTeachers = async (page) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axiosInstance.get('/teacher/all', {
-        params: { page, size: pageSize },
-      });
-      const { content, totalPages } = response.data; // Assuming backend response structure
-      setTeachers(content);
-      console.log(teachers)
-      setTotalPages(totalPages);
-    } catch (err) {
-      console.error('Error fetching teachers:', err);
-      setError('Failed to load teacher data. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTeachers(currentPage);
-    console.log(teachers)
-  }, [currentPage]);
+    const fetchTeachers = async (page) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axiosInstance.get('/teacher/all', {
+          params: { page, size: pageSize },
+        });
+        const { content, totalPages } = response.data;
+        setTeachers(content);
+        setTotalPages(totalPages);
+      } catch (err) {
+        console.error('Error fetching teachers:', err);
+        setError('Failed to load teacher data. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchTeachers(currentPage); // Call the function inside useEffect
+  }, [currentPage, pageSize]); // Dependencies are only currentPage and pageSize
+  
 
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -94,7 +93,7 @@ const TeacherDetails = () => {
           />
 
           {/* Pagination Controls */}
-          {/* <div className="flex justify-center items-center mt-4">
+          <div className="flex justify-center items-center mt-4">
             <button
               className="px-4 py-2 bg-gray-200 rounded-l disabled:opacity-50"
               onClick={() => handlePageChange(currentPage - 1)}
@@ -112,7 +111,7 @@ const TeacherDetails = () => {
             >
               Next
             </button>
-          </div> */}
+          </div>
         </>
       )}
     </div>

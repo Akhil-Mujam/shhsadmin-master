@@ -41,12 +41,7 @@ const ViewStudentAttendanceByTeacher = () => {
     fetchClassDetails();
   }, []);
 
-  // Fetch attendance records whenever classDetails or date changes
-  useEffect(() => {
-    if (classDetails.classId && classDetails.classSection) {
-      fetchAttendance(date);
-    }
-  }, [classDetails, date,fetchAttendance]);
+ 
 
   // Fetch attendance records (memoized for better performance)
   const fetchAttendance = useCallback(
@@ -76,6 +71,13 @@ const ViewStudentAttendanceByTeacher = () => {
     },
     [classDetails]
   );
+
+   // Fetch attendance records whenever classDetails or date changes
+   useEffect(() => {
+    if (classDetails.classId && classDetails.classSection) {
+      fetchAttendance(date);
+    }
+  }, [classDetails, date,fetchAttendance]);
 
   // Handle date change
   const handleDateChange = (event) => {

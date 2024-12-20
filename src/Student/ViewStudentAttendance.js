@@ -1,59 +1,55 @@
-import React, { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../axios";
 
 const ViewStudentAttendance = () => {
   const [regNo, setRegNo] = useState("");
   const [month, setMonth] = useState(() => {
-    const currentMonth = new Date().getMonth() + 1; // Current month (1-based)
-    return currentMonth < 10 ? `0${currentMonth}` : `${currentMonth}`; // "MM" format
+    const currentMonth = new Date().getMonth() + 1;
+    return currentMonth < 10 ? `0${currentMonth}` : `${currentMonth}`;
   });
-  const [attendanceData, setAttendanceData] = useState(null); // Includes student details and attendance
+  const [attendanceData, setAttendanceData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchRegNo(); // Get regNo when the component mounts
-  }, []);
-
-  useEffect(() => {
-    if (regNo && month) {
-      
-      fetchAttendance();
-    }
-  }, [regNo, month,fetchAttendance]);
 
   const fetchRegNo = async () => {
     try {
       const response = await axiosInstance.get("/userauthdata/getUsername");
-      setRegNo(response.data); // Assuming `response.data` contains the `regNo`
-      
+      setRegNo(response.data);
     } catch (error) {
       console.error("Error fetching regNo:", error);
     }
   };
 
-  const fetchAttendance = async () => {
+  const fetchAttendance = useCallback(async () => {
     try {
       setLoading(true);
       const { startDate, endDate } = getMonthDates(month);
       const response = await axiosInstance.get(`/student/attendance/byStudent/${regNo}/from/${startDate}/to/${endDate}`);
-      setAttendanceData(response.data); // Entire response now includes student details
-      console.log(response.data)
+      setAttendanceData(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching attendance:", error);
       setLoading(false);
     }
-  };
+  }, [month, regNo]); // Only re-run when regNo or month change
+
+  useEffect(() => {
+    fetchRegNo();
+  }, []);
+
+  useEffect(() => {
+    if (regNo && month) {
+      fetchAttendance();
+    }
+  }, [regNo, month, fetchAttendance]); // Dependencies are regNo, month, and fetchAttendance
 
   const handleMonthChange = (e) => {
     setMonth(e.target.value);
   };
 
-  // Helper function to get the start and end dates of a given month
   const getMonthDates = (month) => {
-    const year = new Date().getFullYear(); // Use the current year
-    const startDate = new Date(year, parseInt(month)-1, 2);
-    const endDate = new Date(year, parseInt(month), 1); // Last day of the month
+    const year = new Date().getFullYear();
+    const startDate = new Date(year, parseInt(month) - 1, 2);
+    const endDate = new Date(year, parseInt(month), 1);
     return {
       startDate: startDate.toISOString().split("T")[0],
       endDate: endDate.toISOString().split("T")[0],
@@ -62,29 +58,26 @@ const ViewStudentAttendance = () => {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Attendance Details
-      </h2>
-
+      <h2 className="text-2xl font-bold mb-4 text-center">Attendance Details</h2>
       <label className="block mb-2">Select Month:</label>
-          <select
-            value={month}
-            onChange={handleMonthChange}
-            className="mb-4 p-2 border rounded w-full"
-          >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
+      <select
+        value={month}
+        onChange={handleMonthChange}
+        className="mb-4 p-2 border rounded w-full"
+      >
+        <option value="01">January</option>
+        <option value="02">February</option>
+        <option value="03">March</option>
+        <option value="04">April</option>
+        <option value="05">May</option>
+        <option value="06">June</option>
+        <option value="07">July</option>
+        <option value="08">August</option>
+        <option value="09">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
 
       {loading ? (
         <p className="text-center">Loading...</p>
@@ -95,8 +88,6 @@ const ViewStudentAttendance = () => {
             <p><strong>Class:</strong> {attendanceData.className}</p>
             <p><strong>Section:</strong> {attendanceData.classSection}</p>
           </div>
-
-         
 
           {attendanceData.attendanceDetails.length > 0 ? (
             <div className="overflow-x-auto">
