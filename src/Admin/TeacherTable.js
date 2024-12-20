@@ -38,6 +38,8 @@ const TeacherTable = ({ data, fields, onMakeClassTeacher, onRemoveClassTeacher }
     return [];
   };
 
+  //details
+
   const handleClassTeacher = useCallback((teacher) => {
     if (teacher.role === 'Class Teacher') {
       // Remove class teacher role
